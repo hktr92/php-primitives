@@ -5,6 +5,7 @@ namespace hktr92\Primitives;
 
 use function explode;
 use function mb_convert_case;
+use function mb_strcut;
 use function mb_substr;
 use function str_split;
 use function vsprintf;
@@ -130,6 +131,30 @@ class StringUtil {
     }
 
     /**
+     * Cuts the text starting a given position and having a given length.
+     *
+     * @param int $start
+     * @param int $length
+     *
+     * @return StringUtil
+     */
+    public function cut(int $start, ?int $length = null): StringUtil {
+        $length = $length ?? $this->length();
+        $cut    = mb_strcut($this->text, $start, $length, $this->getEncoding());
+
+        return self::init($cut, $this->getEncoding());
+    }
+
+    /**
+     * Performs a clone for this class.
+     *
+     * @return StringUtil
+     */
+    public function copy(): StringUtil {
+        return clone $this;
+    }
+
+    /**
      * @param string $delimiter
      *
      * @return array
@@ -152,14 +177,21 @@ class StringUtil {
     /**
      * @return string
      */
-    public function __toString(): string {
-        return $this->text;
+    public function get(): string {
+        return $this->__toString();
     }
 
     /**
      * @return string
      */
-    public function get(): string {
-        return $this->__toString();
+    public function __toString(): string {
+        return $this->text;
+    }
+
+    /**
+     * @return StringUtil
+     */
+    private function __clone() {
+        return new self($this->get(), $this->getEncoding());
     }
 }

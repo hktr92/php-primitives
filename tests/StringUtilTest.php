@@ -139,4 +139,25 @@ final class StringUtilTest extends TestCase {
     public function testEndsWith(): void {
         $this->assertTrue(StringUtil::init('foobar')->endsWith('bar'));
     }
+
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function testCut(): void {
+        $reference = StringUtil::init('oo');
+        $actual    = StringUtil::init('foo')->cut(1);
+
+        $this->assertEquals($reference->get(), $actual->get());
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function testCopy(): void {
+        $instance = StringUtil::init('foo');
+
+        $this->assertEquals($instance, $instance->copy());
+    }
 }
