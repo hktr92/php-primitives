@@ -56,7 +56,7 @@ class StringUtil {
      *
      * @return string
      */
-    private function caseConvertor(int $case): string {
+    private function caseConverter(int $case): string {
         return mb_convert_case($this->text, $case, $this->getEncoding());
     }
 
@@ -64,21 +64,21 @@ class StringUtil {
      * @return string
      */
     public function toUpperCase(): string {
-        return $this->caseConvertor(MB_CASE_UPPER);
+        return $this->caseConverter(MB_CASE_UPPER);
     }
 
     /**
      * @return string
      */
     public function toLowerCase(): string {
-        return $this->caseConvertor(MB_CASE_LOWER);
+        return $this->caseConverter(MB_CASE_LOWER);
     }
 
     /**
      * @return string
      */
     public function toTitleCase(): string {
-        return $this->caseConvertor(MB_CASE_TITLE);
+        return $this->caseConverter(MB_CASE_TITLE);
     }
 
     /**
