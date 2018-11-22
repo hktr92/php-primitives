@@ -5,7 +5,9 @@ namespace hktr92\Primitives;
 
 use function explode;
 use function mb_convert_case;
+use function mb_internal_encoding;
 use function mb_strcut;
+use function mb_strpos;
 use function mb_substr;
 use function str_split;
 use function vsprintf;
@@ -33,8 +35,9 @@ class StringUtil {
      * @param string|null $encoding
      */
     public function __construct(string $text, string $encoding = null) {
-        $this->text     = $text;
-        $this->encoding = $encoding ?? 'UTF-8';
+        $this->text = $text;
+
+        $this->setEncoding($encoding ?? 'UTF-8');
     }
 
     /**
@@ -42,6 +45,8 @@ class StringUtil {
      */
     public function setEncoding(string $encoding): void {
         $this->encoding = $encoding;
+
+        mb_internal_encoding($encoding);
     }
 
     /**
@@ -57,7 +62,7 @@ class StringUtil {
      * @return string
      */
     private function caseConverter(int $case): string {
-        return mb_convert_case($this->text, $case, $this->getEncoding());
+        return mb_convert_case($this->text, $case);
     }
 
     /**
@@ -85,7 +90,7 @@ class StringUtil {
      * @return int
      */
     public function length(): int {
-        return mb_strlen($this->text, $this->getEncoding());
+        return mb_strlen($this->text);
     }
 
     /**
@@ -112,9 +117,9 @@ class StringUtil {
      * @return bool
      */
     public function startsWith(string $starting): bool {
-        $starting = StringUtil::init($starting, $this->getEncoding());
+        $starting = StringUtil::init($starting);
 
-        return mb_substr($this->text, 0, $starting->length(), $this->getEncoding()) === $starting->get();
+        return mb_substr($this->text, 0, $starting->length()) === $starting->get();
     }
 
     /**
@@ -127,7 +132,11 @@ class StringUtil {
     public function endsWith(string $ending): bool {
         $ending = StringUtil::init($ending, $this->getEncoding());
 
-        return mb_substr($this->text, -$ending->length(), null, $this->getEncoding()) === $ending->get();
+        return mb_substr($this->text, -$ending->length(), null) === $ending->get();
+    }
+
+    public function contains(string $string): bool {
+        return false !== mb_strpos($this->text, $string);
     }
 
     /**
@@ -140,7 +149,7 @@ class StringUtil {
      */
     public function cut(int $start, ?int $length = null): StringUtil {
         $length = $length ?? $this->length();
-        $cut    = mb_strcut($this->text, $start, $length, $this->getEncoding());
+        $cut    = mb_strcut($this->text, $start, $length);
 
         return self::init($cut, $this->getEncoding());
     }
