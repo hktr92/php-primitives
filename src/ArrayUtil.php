@@ -25,7 +25,7 @@ class ArrayUtil implements IteratorAggregate, Countable {
      *
      * @param array $array
      */
-    public function __construct(array $array) {
+    public function __construct(array $array = []) {
         $this->array = $array;
     }
 
