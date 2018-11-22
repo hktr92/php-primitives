@@ -135,6 +135,11 @@ class StringUtil {
         return mb_substr($this->text, -$ending->length(), null) === $ending->get();
     }
 
+    /**
+     * @param string $string
+     *
+     * @return bool
+     */
     public function contains(string $string): bool {
         return false !== mb_strpos($this->text, $string);
     }
